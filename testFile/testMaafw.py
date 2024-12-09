@@ -1,7 +1,9 @@
 import asyncio
 
-from utils.maafw import maafw
+from instance.maafwInstance import maafw
+from utils.testingTime import TestingTime
 
+testingTime = TestingTime()
 
 class TestMaaFw:
     def __init__(self):
@@ -10,11 +12,11 @@ class TestMaaFw:
     async def start_maafw(self):
         self.data = await maafw.find_adb_devices()
 
-
     async def connect(self):
         await maafw.connect_adb(path=self.data[0].adb_path, address=self.data[0].address, config=self.data[0].config)
 
     async def click(self):
+        await testingTime.test_click_time()
         await maafw.click(100, 100)
 
 

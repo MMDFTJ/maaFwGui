@@ -1,2 +1,2 @@
-# *基于MaaFW通用gui*
+# *基于Pyside6的MaaFW通用gui*
 ## 施工ing...

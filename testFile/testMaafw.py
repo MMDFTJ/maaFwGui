@@ -15,8 +15,11 @@ class TestMaaFw:
     async def connect(self):
         await maafw.connect_adb(path=self.data[0].adb_path, address=self.data[0].address, config=self.data[0].config)
 
+
+    async def load_file(self):
+        await maafw.load_resource("")
     async def click(self):
-        await testingTime.test_click_time()
+        await testingTime.run()
         await maafw.click(100, 100)
 
 

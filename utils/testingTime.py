@@ -1,6 +1,7 @@
 """
 用来测试截图时间，点击时间
 """
+import asyncio
 import time
 import numpy as np
 from instance.maafwInstance import maafw
@@ -22,10 +23,7 @@ class TestingTime:
             await maafw.click(100, 100)
             cost = time.time() - start_time
             record.append(cost)
-            print(cost)
         average = float(np.mean(np.sort(record)[:self.TEST_BEST]))
-        print('--------')
-        print(average)
         return average
 
     @staticmethod
@@ -46,8 +44,13 @@ class TestingTime:
             return 'Slow'
         return 'Very Slow'
 
-    def show(self, data, evaluate_func):
-        pass
+    @staticmethod
+    def show(data, evaluate_func):
+        print(evaluate_func(data))
 
-    def run(self):
-        pass
+    async def run(self):
+        data = await self.test_click_time()
+        self.show(data, self.evaluate_click)
+
+
+

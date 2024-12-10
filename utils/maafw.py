@@ -15,9 +15,6 @@ from maa.tasker import Tasker
 from maa.toolkit import Toolkit, AdbDevice
 from maa.notification_handler import NotificationHandler, NotificationType
 from maa.custom_action import CustomAction
-# from cvmatToImage import cvmat_to_image
-
-# from qasync import asyncSlot
 
 
 class MaaFw:

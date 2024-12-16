@@ -10,7 +10,7 @@ from PIL import Image
 # from maa.define import RectType
 from pathlib import Path
 from maa.resource import Resource
-from maa.controller import AdbController
+from maa.controller import AdbController, Win32Controller
 from maa.tasker import Tasker
 from maa.toolkit import Toolkit, AdbDevice
 from maa.notification_handler import NotificationHandler, NotificationType
@@ -19,6 +19,8 @@ from maa.custom_action import CustomAction
 
 class MaaFw:
     notification_handler: Optional[NotificationHandler]
+    tasker: Tasker | None
+    controller: AdbController | Win32Controller | None
 
     def __init__(self):
         Toolkit.init_option('./')

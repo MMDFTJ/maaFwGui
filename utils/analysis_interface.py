@@ -2,56 +2,80 @@
 用来解析interface文件
 """
 import json
-from public.maaConfig import maaConfig
+from instance.maafwInstance import maa_config
 
 
 class AnalysisInterface:
+    _instance = None
 
-    def __init__(self,
-                 interface_path=r'F:\资料\python\Pycharm Project\pythonProject\maaFwGui\resource\interface3.json'):
+    def __new__(cls, *args, **kwargs):
+        """
+        单例中的__new__优点
+        控制实例化：可以拦截并控制对象创建过程。
+        高效性：无需重复初始化实例，减少资源浪费。
+        安全性：确保系统中只有一个全局实例，避免状态不一致问题。
+        """
+        if not cls._instance:
+            cls._instance = super().__new__(cls, *args, **kwargs)
+        return cls._instance
+
+    def __init__(self):
         self.interface_data = None
-        self.interface_path = interface_path
 
-    def load_interface(self):
+    def load_interface(self, interface_path=r'F:\资料\python\Pycharm Project\pythonProject\maaFwGui\interface.json'):
         """
         加载interface文件
         """
-        with open(self.interface_path, encoding='utf-8') as file:
-            self.interface_data = json.load(file)
-            print(self.interface_data)
+        try:
+            with open(interface_path, encoding='utf-8') as file:
+                self.interface_data = json.load(file)
+                print(self.interface_data)
+        except FileNotFoundError:
+            print(f'找不到interface_path文件，检查路径是否正确。当前路径{interface_path}')
+        except json.JSONDecodeError:
+            print('这不是个json文件')
+
+    def get_interface_attribute(self, attribute_name):
+        """
+        获取interface的属性（attribute）并赋值给maaConfig
+        """
+
+        if hasattr(maa_config, f'interface_config_{attribute_name}'):
+            setattr(maa_config, f"interface_config_{attribute_name}", self.interface_data[attribute_name])
+
+        return self.interface_data[attribute_name]
 
     def get_interface_controller(self):
-        return self.interface_data['controller']
+
+        return self.get_interface_attribute('controller')
 
     def get_interface_resource(self):
-        return self.interface_data['resource']
+
+        return self.get_interface_attribute('resource')
 
     def get_interface_task(self):
         """
         获取task任务
         """
-        return self.interface_data['task']
+        return self.get_interface_attribute('task')
 
     def get_interface_option(self):
         """
         获取option任务
         """
-        pass
+        return self.get_interface_attribute('option')
+
+    def start_analysis_interface(self):
+        self.get_interface_controller()
+        self.get_interface_resource()
+        self.get_interface_task()
+        self.get_interface_option()
 
 
-analysisInterface = AnalysisInterface()
-analysisInterface.load_interface()
-analysisInterface.get_interface_controller()
-# maaConfig.interface_config = data
-
-# for key, value in data.items():
-#     print(f'{key} : {value}')
-#     if key == 'controller':
-#         maaConfig.interface_config[key] = value[0]
-#     if key == 'resource':
-#         for i in value:
-#             maaConfig.interface_config['resource'] = value
-#
-# print('*'*10)
-# for x, y in maaConfig.interface_config.items():
-#     print(f'{x}:{y}')
+if __name__ == '__main__':
+    analysisInterface = AnalysisInterface()
+    analysisInterface.load_interface()
+    print(analysisInterface.get_interface_controller())
+    print(analysisInterface.get_interface_resource())
+    print(analysisInterface.get_interface_task())
+    print(analysisInterface.get_interface_option())

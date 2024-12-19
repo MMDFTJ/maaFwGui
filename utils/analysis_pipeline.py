@@ -2,8 +2,6 @@
 用来解析pipeline文件
 """
 import json
-from public.maaConfig import maaConfig
-
 
 class AnalysisPipline:
 

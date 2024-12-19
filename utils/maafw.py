@@ -23,7 +23,7 @@ class MaaFw:
     controller: AdbController | Win32Controller | None
 
     def __init__(self):
-        Toolkit.init_option('./')
+        Toolkit.init_option('/')
         Tasker.set_debug_mode(True)
 
         self.controller = None
@@ -71,7 +71,8 @@ class MaaFw:
         :return:
         """
         if not self.tasker:
-            self.tasker = Tasker(notification_handler=self.notification_handler)
+            # self.tasker = Tasker(notification_handler=self.notification_handler)
+            self.tasker = Tasker()
 
         if not self.resource or not self.controller:
             print("Resource or Controller not initialized")
@@ -129,5 +130,3 @@ class MaaFw:
         """
         pass
 
-
-maafw = MaaFw()
